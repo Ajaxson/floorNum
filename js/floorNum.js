@@ -1,22 +1,24 @@
 /*
-	@param (sum) 万分比，扩选择的数
-	@param (sumPrice)  比例总数
-	@param (chance) 比率, 如百分之 
+	@param (sumPrice)   必选，比例总数
+	@param (chance) 	必选，比率, 各种奖品所占用百分比 
+	@param (ratio)  	可选，扩大取值范围，默认是 100 倍
 */
 function priceFloor(options){
 	// 自定义参数
-	var sum = options.sum;	
-	var sumPrice = options.sumPrice;	
+	var sumQuota = options.sumQuota;	
 	var chance = options.chance;  
+	var ratio = options.ratio || 100;
 
 	//无需修改
+	var sum = sumQuota * ratio;	//取值范围扩大后的倍数
 	var newChance = [ ];	//用于存储  新的  各奖品所占的长度
 	var nowAdd = 0;			//现奖品所在位置
-	var returnNum = 0;		//最终结果
 	var floorNum = 0;		//随机数
+	var returnNum = 0;		//最终结果
+	
 	floorNum = Math.floor(Math.random()*sum+1);
 	for(var i=0,l=chance.length; i<l; i ++){
-		nowAdd = nowAdd + chance[i] / sumPrice * sum;
+		nowAdd = nowAdd + chance[i] / sumQuota * sum;
 		newChance[i] = nowAdd;
 	}
 	if(floorNum <= newChance[0]){
@@ -50,7 +52,6 @@ function priceFloor(options){
 
 // new demo
 // priceFloor({
-// 	sum : 10000,
-// 	sumPrice: 100,
+// 	sumQuota: 100,
 // 	chance : [10,20,5,5,1,59]
 // });
